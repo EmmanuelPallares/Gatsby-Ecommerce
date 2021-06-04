@@ -5,8 +5,9 @@ export default function Jumbo() {
   {
     return (
       <StyledJumbo>
-        <h2>Texto de prueba para anuncio</h2>
-        <small>Piezas elegantes para la ocasion</small>
+        <h2>TU MEJOR OPCION</h2>
+
+        <small>Se cool</small>
       </StyledJumbo>
     )
   }

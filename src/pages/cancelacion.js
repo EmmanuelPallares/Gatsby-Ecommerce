@@ -5,7 +5,7 @@ import { Link } from "gatsby"
 
 export default function thanks() {
   return (
-    <div>
+    <>
       <SEO title="canceled purchase" />
       <Purchase>
         <h2>
@@ -20,6 +20,6 @@ export default function thanks() {
           <Button>Regresar al catálogo</Button>
         </Link>
       </Purchase>
-    </div>
+    </>
   )
 }
