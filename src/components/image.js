@@ -1,0 +1,18 @@
+import React from "react"
+import { graphql, useStaticQuery } from "gatsby"
+import Img from "gatsby-image"
+
+export default function Image({ name }) {
+  const data = useStaticQuery(graphql`
+    query {
+      icon: file(relativePath: { eq: "icon.png" }) {
+        childrenImageSharp {
+          fluid(maxWidth: 1000) {
+            ...GatsbyImageSharpFluid
+          }
+        }
+      }
+    }
+  `)
+  return <Img fluid={data[name].childImageSharp.fluid} />
+}

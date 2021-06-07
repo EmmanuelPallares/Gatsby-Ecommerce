@@ -1,8 +1,8 @@
 module.exports = {
   siteMetadata: {
-    title: `Platzi Swag`,
-    description: `The best swag fo Platzi for you`,
-    author: `@sntwandy`
+    title: `Ecommerce`,
+    description: `Somos tu mejor opción en compras en linea`,
+    author: `@papri`
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -25,6 +25,12 @@ module.exports = {
         theme_color: `#663399`,
         display: `minimal-ui`,
         icon: `src/images/gatsby-icon.png` // This path is relative to the root of the site.
+      }
+    },
+    {
+      resolve: `gatsby-plugin-typography`,
+      options: {
+        pathToConfigModule: "src/utils/typography.js"
       }
     }
     // this (optional) plugin enables Progressive Web App + Offline functionality

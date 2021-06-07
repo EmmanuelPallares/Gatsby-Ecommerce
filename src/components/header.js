@@ -1,12 +1,19 @@
 import * as React from "react"
 import PropTypes from "prop-types"
 import { Link } from "gatsby"
-import { StyledHeader, MenuItem } from "../styles/components"
+import { MenuItem, StyledHeader } from "../styles/components"
 
 const Header = ({ siteTitle }) => (
   <StyledHeader>
     <Link to="/">
-      <h1>Logo</h1>
+      <h1
+        style={{
+          color: `white`,
+          textDecoration: `none`
+        }}
+      >
+        Logo
+      </h1>
     </Link>
     <nav>
       <ul>
