@@ -5,9 +5,9 @@ import Img from "gatsby-image"
 export default function Image({ name }) {
   const data = useStaticQuery(graphql`
     query {
-      icon: file(relativePath: { eq: "icon.png" }) {
-        childrenImageSharp {
-          fluid(maxWidth: 1000) {
+      icon: file(relativePath: { eq: "iconJumbo.png" }) {
+        childImageSharp {
+          fluid(maxWidth: 500) {
             ...GatsbyImageSharpFluid
           }
         }
