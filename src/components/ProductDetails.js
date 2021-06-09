@@ -14,13 +14,27 @@ import { SEO, Stars } from "./"
 
 export default function ProductDetails({
   id,
-  unit_mount,
+  unit_amount,
   product: { name, metadata }
 }) {
-  const price = priceFormat(unit_mount)
-  const [color, setColor] = useState(2)
-  console.log(unit_mount)
-  console.log(price)
+  const price = priceFormat(unit_amount)
+  const resetPrice = price.split("$")
+  const newPrice = parseInt(resetPrice[1])
+  const [precio, setPrecio] = useState({
+    precioInicial: newPrice,
+    dinero: newPrice
+  })
+
+  const quitPriceAndQty = () => {
+    if (quantity > 1) {
+      setQuantity(quantity - 1)
+      setPrecio({ ...precio, dinero: precio.dinero - precio.precioInicial })
+    }
+  }
+  const setPriceAndQty = () => {
+    setQuantity(quantity + 1)
+    setPrecio({ ...precio, dinero: precio.dinero + precio.precioInicial })
+  }
   const [size, setSize] = useState(2)
   const [quantity, setQuantity] = useState(1)
   return (
@@ -30,24 +44,24 @@ export default function ProductDetails({
       <div>
         <Tag>Popular</Tag>
         <h2>{name}</h2>
-        <b>MXN: {price}</b>
+        <b>MXN: {precio.dinero}</b>
         <Stars />
-        {metadata.wear && (
-          <SizeSelect selected={color}>
-            <ColorButton color="gray" onClick={() => setColor(1)}>
-              {" "}
-            </ColorButton>
-            <ColorButton color="blue" onClick={() => setColor(2)}>
-              {" "}
-            </ColorButton>
-            <ColorButton color="red" onClick={() => setColor(3)}>
-              {" "}
-            </ColorButton>
-            <ColorButton color="pink" onClick={() => setColor(4)}>
-              {" "}
-            </ColorButton>
-          </SizeSelect>
-        )}
+        {metadata.wear && <h2>Disponible</h2>
+        // <SizeSelect selected={color}>
+        //   <ColorButton color="gray" onClick={() => setColor(1)}>
+        //     {" "}
+        //   </ColorButton>
+        //   <ColorButton color="blue" onClick={() => setColor(2)}>
+        //     {" "}
+        //   </ColorButton>
+        //   <ColorButton color="red" onClick={() => setColor(3)}>
+        //     {" "}
+        //   </ColorButton>
+        //   <ColorButton color="pink" onClick={() => setColor(4)}>
+        //     {" "}
+        //   </ColorButton>
+        // </SizeSelect>
+        }
         <small>{metadata.description}</small>
         {metadata.wear && (
           <SizeSelect selected={size}>
@@ -59,13 +73,9 @@ export default function ProductDetails({
         )}
         <p>Cantidad:</p>
         <QtySelect>
-          <button
-            onClick={() => (quantity > 1 ? setQuantity(quantity - 1) : null)}
-          >
-            -
-          </button>
+          <button onClick={quitPriceAndQty}>-</button>
           <input type="text" disabled value={quantity} />
-          <button onClick={() => setQuantity(quantity + 1)}>+</button>
+          <button onClick={setPriceAndQty}>+</button>
         </QtySelect>
 
         <Button>Agregar al carrito</Button>
