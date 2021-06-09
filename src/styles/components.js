@@ -59,6 +59,21 @@ export const StyledHeader = styled.header`
     }
   `}
 `
+
+export const ColorButton = styled.button`
+  padding: calc(0.4rem + 1px);
+  background-color: ${props => props.color};
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  color: #272727;
+  opacity: ${({ unavailable }) => (unavailable ? 0.4 : 1)};
+  transition: 0.4s all ease;
+  &:focus {
+    outline: none;
+  }
+  &:hover {
+    transform: scale(1.2);
+  }
+`
 export const StyledJumbo = styled.div`
   display: flex;
   align-items: center;
