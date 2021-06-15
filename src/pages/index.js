@@ -1,9 +1,6 @@
 import React from "react"
-import { Link } from "gatsby"
-import { Jumbo, Products } from "../components"
-import { StaticImage } from "gatsby-plugin-image"
-import Seo from "../components/seo"
-import { node } from "prop-types"
+import { graphql } from "gatsby"
+import { SEO, Jumbo, Products } from "../components"
 
 export const query = graphql`
   query GET_DATA {
@@ -11,19 +8,16 @@ export const query = graphql`
       edges {
         node {
           siteMetadata {
-            title
             description
-            author
           }
         }
       }
     }
-
-    allStripePrice {
+    allStripeSku: allStripePrice {
       edges {
         node {
           id
-          unit_amount
+          price: unit_amount
           product {
             name
             metadata {
@@ -38,22 +32,12 @@ export const query = graphql`
   }
 `
 
-const IndexPage = ({ data }) => {
-  console.log(data)
-  return (
-    <>
-      <Seo title="Home" />
-      <Jumbo
-        description={data.allSite.edges[0].node.siteMetadata.description}
-      />
-      <Products products={data.allStripePrice.edges} />
-
-      <p>
-        <Link to="/gracias/">Ir a gracias</Link> <br />
-        <Link to="/cancelacion/">Ir a cancelación</Link>
-      </p>
-    </>
-  )
-}
+const IndexPage = ({ data }) => (
+  <>
+    <SEO title="Home" />
+    <Jumbo description={data.allSite.edges[0].node.siteMetadata.description} />
+    <Products products={data.allStripeSku.edges} />
+  </>
+)
 
 export default IndexPage

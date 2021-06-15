@@ -8,16 +8,15 @@ export default function Products({ products }) {
       <h2>Productos</h2>
       <section>
         {products.map(({ node }) => {
-          const unit_amount = formatprice(node.unit_amount)
+          const price = formatprice(node.price)
           return (
             <article key={node.id}>
-              <img
-                src={node.product.metadata.img}
-                alt={node.product.name}
-              ></img>
+              <img src={node.product.metadata.img} alt={node.product.name} />
               <p>{node.product.name}</p>
-              <small>MXN {unit_amount}</small>
-              <Link to={`/${node.id}`}>Comprar Ahora</Link>
+              <small>MXN: {price}</small>
+              <Link to={`/${node.id}`}>
+                <a>Comprar ahora ➡️</a>
+              </Link>
             </article>
           )
         })}

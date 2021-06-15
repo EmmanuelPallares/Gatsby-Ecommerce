@@ -1,11 +1,43 @@
-import React, { useContext } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import { Link } from "gatsby"
 import { Button, StyledCart } from "../styles/components"
-import { priceFormat } from "../utils/priceFormat"
+import priceFormat from "../utils/priceFormat"
 import { CartContext } from "../utils/context"
 
-export default function Cart() {
+export default function CartComponent() {
   const { cart } = useContext(CartContext)
+  const [total, setTotal] = useState(0)
+  const [stripe, setStripe] = useState()
+
+  const getTotal = () => {
+    setTotal(
+      cart.reduce((acc, current) => acc + current.price * current.quantity, 0)
+    )
+  }
+
+  useEffect(() => {
+    setStripe(window.Stripe(process.env.STRIPE_PK))
+    getTotal()
+  }, [])
+
+  const handleSubmit = async e => {
+    e.preventDefault()
+
+    const { error } = await stripe.redirectToCheckout({
+      lineItems: cart.map(({ id, quantity }) => ({
+        price: id,
+        quantity: quantity
+      })),
+      mode: `payment`,
+      successUrl: process.env.SUCCES_REDIRECT,
+      cancelUrl: process.env.CANCEL_REDIRECT
+    })
+
+    if (error) {
+      throw new Error(error.message)
+    }
+  }
+
   return (
     <StyledCart>
       <h2>Carrito de Compras</h2>
@@ -18,11 +50,11 @@ export default function Cart() {
             <th>Total</th>
           </tr>
           {cart.map(swag => (
-            <tr key={swag.unit_amount}>
+            <tr key={swag.id}>
               <td>
-                <img src={swag.metadata.image} alt={swag.name} /> {swag.name}
+                <img src={swag.metadata.img} alt={swag.name} /> {swag.name}
               </td>
-              <td>MXN: {priceFormat(swag.price)}</td>
+              <td>MXN:{priceFormat(swag.price)}</td>
               <td>{swag.quantity}</td>
               <td>{priceFormat(swag.quantity * swag.price)}</td>
             </tr>
@@ -31,14 +63,16 @@ export default function Cart() {
       </table>
       <nav>
         <div>
-          <h3>Subtotal:</h3>
-          <small>total</small>
+          <h3>Subtotal</h3>
+          <small>MXN: {priceFormat(total)}</small>
         </div>
         <div>
           <Link to="/">
             <Button type="outline">Volver</Button>
           </Link>
-          <Button>Comprar</Button>
+          <Button onClick={handleSubmit} disabled={cart.length === 0}>
+            Comprar
+          </Button>
         </div>
       </nav>
     </StyledCart>
